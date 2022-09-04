@@ -240,7 +240,7 @@ def main():
     parser.add_argument(
         "--no-watermark",
         action='store_true',
-        help="no watermark will be added to output images",
+        help="no watermark will be added to output images"
     )
     
     opt = parser.parse_args()
@@ -268,7 +268,7 @@ def main():
     outpath = opt.outdir
 
     wm_encoder = None;
-    if not opt.no_watermark
+    if not opt.no_watermark:
         print("Creating invisible watermark encoder (see https://github.com/ShieldMnt/invisible-watermark)...")
         wm = "StableDiffusionV1"
         wm_encoder = WatermarkEncoder()
