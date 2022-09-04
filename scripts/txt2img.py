@@ -237,6 +237,12 @@ def main():
         choices=["full", "autocast"],
         default="autocast"
     )
+    parser.add_argument(
+        "--no-watermark",
+        action='store_true',
+        help="no watermark will be added to output images"
+    )
+    
     opt = parser.parse_args()
 
     if opt.laion400m:
@@ -261,10 +267,12 @@ def main():
     os.makedirs(opt.outdir, exist_ok=True)
     outpath = opt.outdir
 
-    print("Creating invisible watermark encoder (see https://github.com/ShieldMnt/invisible-watermark)...")
-    wm = "StableDiffusionV1"
-    wm_encoder = WatermarkEncoder()
-    wm_encoder.set_watermark('bytes', wm.encode('utf-8'))
+    wm_encoder = None;
+    if not opt.no_watermark:
+        print("Creating invisible watermark encoder (see https://github.com/ShieldMnt/invisible-watermark)...")
+        wm = "StableDiffusionV1"
+        wm_encoder = WatermarkEncoder()
+        wm_encoder.set_watermark('bytes', wm.encode('utf-8'))
 
     batch_size = opt.n_samples
     n_rows = opt.n_rows if opt.n_rows > 0 else batch_size
